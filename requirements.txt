@@ -1,0 +1,8 @@
+torch
+sentence-transformers
+streamlit
+lyricsgenius
+python-dotenv
+matplotlib
+scikit-learn
+numpy
