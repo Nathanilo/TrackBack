@@ -27,6 +27,7 @@ TrackBack/
 ├── learning_curve.png          # Plotted loss metrics (Generated after training)
 ├── genius_api.env              # Environment file for Genius API credentials (Git ignored)
 ├── example_genius_api.env      # Example template for setting up API credentials
+├── requirements.txt            # Python package dependencies
 ├── .gitignore                  # Ignored files configuration
 ├── README.md                   # Project documentation
 │
@@ -40,24 +41,33 @@ TrackBack/
 
 ## 🚀 Setup & Execution
 
-### 1. Scraping Lyrics (Optional)
-To scrape data, you must connect to the Genius Lyrics API:
+### 1. Installation
+Clone the repository and install the required dependencies using `pip`:
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Scraping Lyrics (Optional)
+If you wish to augment the dataset, you must configure the Genius Lyrics API:
 1. Copy `example_genius_api.env` to a new file named `genius_api.env`.
 2. Add your Genius API credentials (`GENIUS_CLIENT_ID`, `GENIUS_CLIENT_SECRET`, `GENIUS_ACCESS_TOKEN`).
 3. Add any desired songs to `scrapper/songs.txt`.
-4. Run `python scrapper/scraper.py`.
+4. Run the scraper:
+   ```bash
+   python scrapper/scraper.py
+   ```
 
 > [!NOTE]
 > **Artist Filter:** By default, `scrapper/scraper.py` contains a strict condition that only downloads and saves lyrics explicitly matched to the artist `"ABBA"`. If you are training TrackBack on a different artist or a generic dataset, open `scrapper/scraper.py` and adjust or remove the `"ABBA"` condition to suit your preference!
 
-### 2. Training the Model
-Run the offline training pipeline to process the data, extract embeddings, and train the neural network:
+### 3. Training the Model
+Execute the offline training pipeline. This will process the data, extract embeddings, train the neural network, and generate the learning curve plot:
 ```bash
 python src/train.py
 ```
 
-### 3. Running the App
-Launch the Streamlit web application:
+### 4. Running the Web App
+Launch the interactive Streamlit dashboard:
 ```bash
 streamlit run src/app.py
 ```
