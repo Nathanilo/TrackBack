@@ -30,7 +30,7 @@ def create_training_data(data_folder):
     raw_song_lines = defaultdict(list)
     line_to_songs = defaultdict(set)
     
-    for filename in os.listdir(data_folder):
+    for filename in sorted(os.listdir(data_folder)):
         if filename.endswith(".txt"):
             title = filename.replace(".txt", "")
             label_to_song[song_id] = title
