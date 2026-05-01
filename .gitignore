@@ -1,0 +1,26 @@
+# Virtual Environments
+venv/
+env/
+.env
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyTorch Models & Plots
+*.pth
+learning_curve.png
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+
+# IDEs
+.vscode/
+.idea/
+
+# Custom Files
+some_notes.docx
+genius_api.env
