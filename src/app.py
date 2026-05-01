@@ -38,7 +38,7 @@ def load_resources():
 
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     model = TrackBackNetwork(input_size=384, hidden_size=256, num_songs=num_songs)
-    model.load_state_dict(torch.load(MODEL_PATH, weights_only=True))
+    model.load_state_dict(torch.load(MODEL_PATH, map_location=device, weights_only=True))
     model = model.to(device)
     model.eval()
 
