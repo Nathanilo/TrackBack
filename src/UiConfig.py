@@ -11,7 +11,7 @@ LIGHT = {
     "text":           "#1a1530",
     "subtitle":       "#7a6e8a",
     "divider":        "#c8a830",
-    "input_bg":       "rgba(0,0,0,0.04)",
+    "input_bg":       "#ffffff",
     "input_border":   "rgba(180,140,40,0.35)",
     "input_focus":    "rgba(180,140,40,0.75)",
     "input_shadow":   "rgba(180,140,40,0.15)",
@@ -37,7 +37,7 @@ DARK = {
     "input_border":   "rgba(245,208,96,0.45)",
     "input_focus":    "rgba(245,208,96,0.9)",
     "input_shadow":   "rgba(245,208,96,0.18)",
-    "input_text":     "#000000",
+    "input_text":     "#f5edd8",
     "label_color":    "#d0c0e8",
     "card_border":    "rgba(255,255,255,0.12)",
     "card_strong_bg": "rgba(245,208,96,0.13)",
@@ -124,22 +124,41 @@ html, body, [data-testid="stAppViewContainer"] {{
 }}
 
 /* ── Search Input ── */
-[data-testid="stTextInput"] input {{
+/* Target every known Streamlit input wrapper variant for cloud consistency */
+[data-testid="stTextInput"] input,
+[data-testid="stTextInput"] > div > div > input,
+.stTextInput input {{
+    background-color: {T["input_bg"]} !important;
     background: {T["input_bg"]} !important;
     border: 1px solid {T["input_border"]} !important;
     border-radius: 12px !important;
     color: {T["input_text"]} !important;
+    -webkit-text-fill-color: {T["input_text"]} !important;
+    caret-color: {T["input_text"]} !important;
     font-family: 'DM Sans', sans-serif !important;
     font-size: 1rem !important;
     padding: 0.6rem 1rem !important;
     min-height: 2.55rem !important;
     transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: none !important;
 }}
-[data-testid="stTextInput"] input:focus {{
+[data-testid="stTextInput"] input:focus,
+[data-testid="stTextInput"] > div > div > input:focus,
+.stTextInput input:focus {{
     border-color: {T["input_focus"]} !important;
     box-shadow: 0 0 0 3px {T["input_shadow"]} !important;
+    outline: none !important;
 }}
-[data-testid="stTextInput"] label {{
+/* Autofill overrides — browsers inject their own bg on autofill */
+[data-testid="stTextInput"] input:-webkit-autofill,
+[data-testid="stTextInput"] input:-webkit-autofill:hover,
+[data-testid="stTextInput"] input:-webkit-autofill:focus {{
+    -webkit-box-shadow: 0 0 0px 1000px {T["input_bg"]} inset !important;
+    -webkit-text-fill-color: {T["input_text"]} !important;
+    caret-color: {T["input_text"]} !important;
+}}
+[data-testid="stTextInput"] label,
+.stTextInput label {{
     color: {T["label_color"]} !important;
     font-size: 0.85rem !important;
     letter-spacing: 0.08em;
@@ -226,7 +245,8 @@ html, body, [data-testid="stAppViewContainer"] {{
 }}
 
 /* ── Search Button ── */
-[data-testid="stButton"] button {{
+[data-testid="stButton"] button,
+.stButton > button {{
     background: linear-gradient(135deg, #c8a830 0%, #e8a020 100%) !important;
     color: #1a1530 !important;
     font-family: 'DM Sans', sans-serif !important;
@@ -239,11 +259,13 @@ html, body, [data-testid="stAppViewContainer"] {{
     transition: opacity 0.2s, transform 0.1s !important;
     width: 100% !important;
 }}
-[data-testid="stButton"] button:hover {{
+[data-testid="stButton"] button:hover,
+.stButton > button:hover {{
     opacity: 0.88 !important;
     transform: translateY(-1px) !important;
 }}
-[data-testid="stButton"] button:active {{
+[data-testid="stButton"] button:active,
+.stButton > button:active {{
     transform: translateY(0px) !important;
     opacity: 1 !important;
 }}
@@ -256,12 +278,26 @@ html, body, [data-testid="stAppViewContainer"] {{
 }}
 
 /* Toggle label */
-[data-testid="stToggle"] p {{
+[data-testid="stToggle"] p,
+.stToggle p {{
     color: {T["label_color"]} !important;
     font-size: 0.8rem !important;
     font-family: 'DM Sans', sans-serif !important;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+}}
+
+/* ── Force Streamlit's own dark-theme overrides to yield ── */
+[data-testid="stAppViewContainer"] [data-baseweb="input"] {{
+    background-color: transparent !important;
+}}
+[data-baseweb="base-input"] {{
+    background-color: {T["input_bg"]} !important;
+}}
+[data-baseweb="base-input"] input {{
+    color: {T["input_text"]} !important;
+    -webkit-text-fill-color: {T["input_text"]} !important;
+    background-color: {T["input_bg"]} !important;
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -299,18 +335,18 @@ def render_divider() -> None:
 
 
 SONG_MAP = {
-    "Ring Ring": "https://www.youtube.com/watch?v=TL0EoXdpOqg",
+    "Ring Ring": "https://www.youtube.com/watch?v=TL0EoXdpZR0",
     "Another Town, Another Train": "https://www.youtube.com/watch?v=wCDwOuuGprg",
     "Disillusion": "https://www.youtube.com/watch?v=FQElL6jThxo",
     "People Need Love": "https://www.youtube.com/watch?v=pO7ubf4h8sk",
     "I Saw It in the Mirror": "https://www.youtube.com/watch?v=zjLKwahiQrU",
     "Nina, Pretty Ballerina": "https://www.youtube.com/watch?v=Rnz-qwt8hE4",
-    "Love Isn’t Easy (But It Sure Is Hard Enough)": "https://www.youtube.com/watch?v=YloY5vzw_oE",
-    "Me and Bobby and Bobby’s Brother": "https://www.youtube.com/watch?v=-DJ4UrMO0m0",
+    "Love Isn't Easy (But It Sure Is Hard Enough)": "https://www.youtube.com/watch?v=YloY5vzw_oE",
+    "Me and Bobby and Bobby's Brother": "https://www.youtube.com/watch?v=-DJ4UrMO0m0",
     "He Is Your Brother": "https://www.youtube.com/watch?v=UTLGrElgxt0",
-    "She’s My Kind of Girl": "https://www.youtube.com/watch?v=jWnKGNTUnDo",
+    "She's My Kind of Girl": "https://www.youtube.com/watch?v=jWnKGNTUnDo",
     "I Am Just a Girl": "https://www.youtube.com/watch?v=zLu_gWq4NUA",
-    "Rock’n Roll Band": "https://www.youtube.com/watch?v=nPrkyBa0j7s",
+    "Rock'n Roll Band": "https://www.youtube.com/watch?v=nPrkyBa0j7s",
     "Waterloo": "https://www.youtube.com/watch?v=Sj_9CiNkkn4",
     "Sitting in the Palmtree": "https://www.youtube.com/watch?v=eSBHdxyhPWo",
     "King Kong Song": "https://www.youtube.com/watch?v=w7YwFrApvP0",
@@ -331,7 +367,7 @@ SONG_MAP = {
     "I Do, I Do, I Do, I Do, I Do": "https://www.youtube.com/watch?v=tW3HN_pvbE4",
     "Rock Me": "https://www.youtube.com/watch?v=ISkMe6nOYVU",
     "Intermezzo No. 1": "https://www.youtube.com/watch?v=0ZQ9qqPG3EM",
-    "I’ve Been Waiting for You": "https://www.youtube.com/watch?v=ueeRcRn-owg",
+    "I've Been Waiting for You": "https://www.youtube.com/watch?v=ueeRcRn-owg",
     "So Long": "https://www.youtube.com/watch?v=ZskAO2VUHPE",
     "When I Kissed the Teacher": "https://www.youtube.com/watch?v=jGj8oM9NUZk",
     "Dancing Queen": "https://www.youtube.com/watch?v=xFrGuyw1V8s",
@@ -339,7 +375,7 @@ SONG_MAP = {
     "Dum Dum Diddle": "https://www.youtube.com/watch?v=1g7kXC-bOgY",
     "Knowing Me, Knowing You": "https://www.youtube.com/watch?v=iUrzicaiRLU",
     "Money, Money, Money": "https://www.youtube.com/watch?v=ETxmCCsMoD0",
-    "That’s Me": "https://www.youtube.com/watch?v=mP_dk429rbc",
+    "That's Me": "https://www.youtube.com/watch?v=mP_dk429rbc",
     "Why Did It Have to Be Me": "https://www.youtube.com/watch?v=zsx0NwK3pOQ",
     "Tiger": "https://www.youtube.com/watch?v=wWQ7wrPyUe0",
     "Eagle": "https://www.youtube.com/watch?v=dDI7x1nwTUw",
@@ -350,7 +386,7 @@ SONG_MAP = {
     "Hole in Your Soul": "https://www.youtube.com/watch?v=CR1nWKphP9Q",
     "Thank You for the Music": "https://www.youtube.com/watch?v=0dcbw4IEY5w",
     "I Wonder (Departure)": "https://www.youtube.com/watch?v=98_Q7Mztm8A",
-    "I’m a Marionette": "https://www.youtube.com/watch?v=iB3349AaNUw",
+    "I'm a Marionette": "https://www.youtube.com/watch?v=iB3349AaNUw",
     "As Good as New": "https://www.youtube.com/watch?v=A3gHZFKJ7nE",
     "Voulez-Vous": "https://www.youtube.com/watch?v=za05HBtGsgU",
     "I Have a Dream": "https://www.youtube.com/watch?v=ER_3h03omdE",
